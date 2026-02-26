@@ -5,22 +5,22 @@ on:
     - cron: '15 3 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   update-repo:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Setup Git
-        run: |
-          git config user.name "DevSync Bot"
-          git config user.email "24f2001824@ds.study.iitm.ac.in"
+        uses: actions/checkout@v4
 
       - name: Daily Commit Step - 24f2001824@ds.study.iitm.ac.in
         run: |
+          git config user.name "DevSync Bot"
+          git config user.email "24f2001824@ds.study.iitm.ac.in"
           echo "Daily update: $(date)" >> update-log.txt
           git add update-log.txt
-          git commit -m "Automated daily commit"
+          git commit -m "Automated daily commit on $(date)" || echo "No changes to commit"
           git push
